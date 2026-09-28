@@ -83,5 +83,47 @@
         "demo": ""
       }
     }
+  ],
+  "Experiencia" : [
+    {
+      "empresa": "Aché Laboratórios Farmaceuticos",
+      "cargo": "Jovem Aprendiz - Garantia da Qualidade",
+      "atividades" : [
+        "Análise detalhada de processos operacionais em ambiente corporativo altamente regulado, mapeando regras de negócio e identificando oportunidades de melhoria contínua.",
+        "Criação e implementação de automações utilizando Python, Excel (VBA) e Power Automate para eliminação de tarefas manuais e redução de erros operacionais.",
+        "Levantamento de necessidades operacionais junto a diversas áreas e facilitação de treinamentos e alinhamentos técnicos.",
+        "Gestão de documentos via sistema SE Suíte.",
+        "Gestão e controle de treinamentos corporativos de documentos",
+        "Aplicação de treinamentos de integração.",
+        "Gestão de retenção de documentos.",
+        "Apoio em tarefas administrativas."
+      ]
+    }
+  ],
+  "formacao" : [
+    {
+      "instituicao": "SENAI",
+      "curso": "Técnico em administração",
+      "inicio": 2024,
+      "fim": 2026
+    },
+    {
+      "instituicao": "SENAI",
+      "curso": "Técnico em mecatrônica",
+      "inicio": 2022,
+      "fim": 2024
+    },
+    {
+      "instituicao": "ETEC",
+      "curso": "Técnico em desenvolvimento de sistemas",
+      "inicio": 2021,
+      "fim": 2022
+    },
+    {
+      "instituicao": "UNIVESP",
+      "curso": "Bacharelado em Ciência de Dados",
+      "inicio": 2026,
+      "fim": 2030
+    }
   ]
 }

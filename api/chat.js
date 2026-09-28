@@ -7,8 +7,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.error("ERRO: GEMINI_API_KEY não encontrada nas variáveis de ambiente.");
-    return res.status(500).json({ resposta: "Chave de API não configurada no servidor." });
+    return res.status(500).json({ resposta: "Chave GEMINI_API_KEY não configurada na Vercel." });
   }
 
   const promptSystem = `Você é o assistente virtual do portfólio de Erik Ribeiro Café.
@@ -19,44 +18,35 @@ ${JSON.stringify(dadosPortfolio || {})}
 Pergunta do usuário: ${mensagem}`;
 
   try {
-    // Usando o modelo v1beta com o parâmetro de chave correto
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey.trim())}`;
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: promptSystem }]
-          }
-        ]
-      })
-    });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey.trim()}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: promptSystem }]
+            }
+          ]
+        })
+      }
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Erro da API Gemini:", JSON.stringify(data));
-      return res.status(response.status).json({ 
-        resposta: "Tive um problema ao consultar as informações da IA.",
-        detalhe: data.error?.message || "Erro de requisição" 
-      });
+      console.error("Erro retornado pelo Gemini:", data);
+      return res.status(response.status).json({ resposta: "Erro ao consultar a API do Gemini.", detalhe: data });
     }
 
-    const textoResposta = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!textoResposta) {
-      return res.status(200).json({ resposta: "Não encontrei detalhes sobre isso no portfólio do Erik." });
-    }
-
+    const textoResposta = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta do modelo.";
     return res.status(200).json({ resposta: textoResposta });
 
   } catch (erro) {
-    console.error("Erro interno na função serverless:", erro);
-    return res.status(500).json({ resposta: "Erro interno no servidor ao conectar com a IA." });
+    console.error("Erro na função:", erro);
+    return res.status(500).json({ resposta: "Erro interno no servidor." });
   }
 }

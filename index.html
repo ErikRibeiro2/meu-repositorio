@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Portfólio</title>
+  <style>
+    :root {
+      --bg-color: #0b0c10;
+      --card-bg: rgba(21, 22, 27, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f2f5;
+      --text-secondary: #9da3ae;
+      --accent-about: #29b6f6;
+      --accent-chat: #00e5ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px 20px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ================= EFEITO GLOW DINÂMICO (AURORA) ================= */
+    .aurora-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+      filter: blur(80px);
+      opacity: 0.65;
+    }
+
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      mix-blend-mode: screen;
+    }
+
+    .blob-1 {
+      top: 20%;
+      left: 30%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #80d8ff 0%, #00e5ff 60%, transparent 100%);
+      animation: moverBlob1 6s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      bottom: 15%;
+      right: 25%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #82b1ff 0%, #2979ff 60%, transparent 100%);
+      animation: moverBlob2 8s ease-in-out infinite alternate;
+    }
+
+    .blob-3 {
+      top: 40%;
+      right: 35%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, #b388ff 0%, #18ffff 70%, transparent 100%);
+      animation: moverBlob3 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes moverBlob1 {
+      0% { transform: translate(0px, 0px) scale(1); filter: hue-rotate(0deg); }
+      50% { transform: translate(80px, -60px) scale(1.25); filter: hue-rotate(120deg); }
+      100% { transform: translate(-50px, 70px) scale(0.9); filter: hue-rotate(-90deg); }
+    }
+
+    @keyframes moverBlob2 {
+      0% { transform: translate(0px, 0px) scale(1); filter: hue-rotate(0deg); }
+      50% { transform: translate(-90px, -50px) scale(1.15); filter: hue-rotate(-140deg); }
+      100% { transform: translate(60px, 80px) scale(0.85); filter: hue-rotate(100deg); }
+    }
+
+    @keyframes moverBlob3 {
+      0% { transform: translate(0px, 0px) scale(0.9); opacity: 0.4; filter: hue-rotate(0deg); }
+      50% { transform: translate(100px, 40px) scale(1.3); opacity: 0.8; filter: hue-rotate(180deg); }
+      100% { transform: translate(-70px, -80px) scale(1); opacity: 0.5; filter: hue-rotate(-60deg); }
+    }
+
+    /* ================= ANIMAÇÕES DE ENTRADA ================= */
+    .fade-enter {
+      animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ================= ESTILOS PRINCIPAIS ================= */
+    .container {
+      width: 100%;
+      max-width: 900px;
+      flex-grow: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ---- TELA 1: MENU PRINCIPAL ---- */
+    .header-menu {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header-menu h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header-menu p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .grid-categorias {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .card-categoria {
+      background-color: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: left;
+      width: 100%;
+      position: relative;
+    }
+
+    .card-categoria:hover {
+      border-color: var(--accent-color);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px var(--accent-color);
+    }
+
+    .box-icone {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background-color: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .box-icone svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--accent-color);
+    }
+
+    .card-categoria span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .badge-contador {
+      margin-left: auto;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .card-categoria:hover .badge-contador {
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* ---- TELA 2: LISTA DE PROJETOS ---- */
+    .btn-voltar {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      transition: all 0.2s;
+    }
+
+    .btn-voltar:hover {
+      color: var(--text-main);
+      border-color: var(--text-main);
+    }
+
+    .header-categoria {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .header-categoria h2 { font-size: 1.8rem; }
+
+    .container-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .chip-tech {
+      background-color: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chip-tech:hover {
+      border-color: var(--categoria-cor);
+      color: var(--text-main);
+      transform: scale(1.05);
+    }
+
+    .chip-tech.ativo {
+      background-color: var(--categoria-cor);
+      border-color: var(--categoria-cor);
+      color: #0b0c10;
+      font-weight: 600;
+    }
+
+    .grid-projetos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card-projeto {
+      background-color: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card-projeto:hover {
+      transform: translateY(-4px);
+      border-color: var(--categoria-cor);
+    }
+
+    .capa-projeto {
+      height: 140px;
+      background-color: var(--categoria-cor-alpha, #1a1a1e);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .capa-projeto svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--categoria-cor);
+      opacity: 0.8;
+    }
+
+    .conteudo-projeto {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .titulo-projeto {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .tags-projeto {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .descricao-projeto {
+      font-size: 0.9rem;
+      color: #c5c9d0;
+      line-height: 1.4;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .rodape-projeto {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .badge-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+    }
+
+    .badge-status svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--categoria-cor);
+    }
+
+    .btn-abrir-detalhes {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+
+    .card-projeto:hover .btn-abrir-detalhes {
+      color: var(--categoria-cor);
+    }
+
+    /* ---- RODAPÉ DO SITE ---- */
+    footer {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+    }
+
+    .btn-sobre-mim-rodape {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 16px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-sobre-mim-rodape svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent-about);
+    }
+
+    .btn-sobre-mim-rodape:hover {
+      border-color: var(--accent-about);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(41, 182, 246, 0.25);
+    }
+
+    /* ================= CHATBOT FLUTUANTE (IA) ================= */
+    .chat-trigger-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(21, 22, 27, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      color: #00e5ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.3);
+      z-index: 999;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chat-trigger-btn:hover {
+      transform: scale(1.08) translateY(-2px);
+      border-color: #00e5ff;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 229, 255, 0.6);
+    }
+
+    .chat-trigger-btn svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--accent-chat);
+    }
+
+    .chat-window {
+      position: fixed;
+      bottom: 92px;
+      right: 24px;
+      width: 360px;
+      max-width: calc(100vw - 48px);
+      height: 500px;
+      max-height: calc(100vh - 120px);
+      background: rgba(18, 19, 24, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 229, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      z-index: 999;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .chat-header {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #80d8ff 0%, #00e5ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-avatar svg {
+      width: 18px;
+      height: 18px;
+      stroke: #0b0c10;
+    }
+
+    .chat-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .chat-status {
+      font-size: 0.75rem;
+      color: #00e5ff;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chat-status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #00e5ff;
+      box-shadow: 0 0 6px #00e5ff;
+    }
+
+    .chat-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .chat-close-btn:hover { color: var(--text-main); }
+
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+    }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .chat-msg-bot {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #e0e6ed;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-msg-user {
+      align-self: flex-end;
+      background: var(--accent-chat);
+      color: #0b0c10;
+      font-weight: 600;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-suggestions {
+      padding: 8px 16px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .chat-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chat-chip:hover {
+      border-color: var(--accent-chat);
+      color: var(--accent-chat);
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    .chat-input-area {
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 8px 14px;
+      color: var(--text-main);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-chat);
+    }
+
+    .chat-send-btn {
+      background: var(--accent-chat);
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .chat-send-btn:hover { opacity: 0.85; }
+
+    .chat-send-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: #0b0c10;
+    }
+
+    /* ---- MODAIS GENÉRICOS ---- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--categoria-cor, var(--accent-about));
+      border-radius: 20px;
+      width: 100%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--categoria-cor, var(--accent-about)) rgba(255, 255, 255, 0.03);
+    }
+
+    .modal-content::-webkit-scrollbar { width: 8px; }
+    .modal-content::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 0 16px 16px 0; }
+    .modal-content::-webkit-scrollbar-thumb { background: var(--categoria-cor, var(--accent-about)); border-radius: 4px; }
+    .modal-content::-webkit-scrollbar-thumb:hover { background: #ffffff; }
+
+    .btn-fechar-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .btn-fechar-modal:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .modal-header { margin-bottom: 24px; }
+    .modal-titulo { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; padding-right: 30px; }
+    .modal-techs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .tag-modal { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--categoria-cor, var(--accent-about)); padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+    .modal-secao { margin-bottom: 24px; }
+    .modal-secao h4 { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .modal-secao p { color: #c5c9d0; line-height: 1.6; font-size: 0.98rem; }
+
+    .modal-acoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--card-border); }
+    .btn-acao-modal { padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-acao-primary { background-color: var(--categoria-cor, var(--accent-about)); color: #0b0c10; }
+    .btn-acao-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+    .btn-acao-secondary { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-main); }
+    .btn-acao-secondary:hover { border-color: var(--text-main); transform: translateY(-2px); }
+
+    .info-localizacao {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= LUZES DE FUNDO (AURORA GLOW) ================= -->
+  <div class="aurora-bg">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+    <div class="aurora-blob blob-3"></div>
+  </div>
+
+  <div class="container">
+
+    <!-- ================= TELA 1: MENU PRINCIPAL ================= -->
+    <section id="tela-menu" class="fade-enter">
+      <div class="header-menu">
+        <h1>Bem-vindo ao meu portfólio</h1>
+        <p>Qual tipo de projeto você quer ver?</p>
+      </div>
+
+      <div class="grid-categorias" id="grid-categorias"></div>
+    </section>
+
+    <!-- ================= TELA 2: LISTA DE PROJETOS ================= -->
+    <section id="tela-projetos" class="hidden">
+      <button class="btn-voltar" onclick="mostrarMenu()">
+        &#8592; Voltar para categorias
+      </button>
+
+      <div class="header-categoria" id="header-categoria"></div>
+      <div class="container-chips" id="container-chips"></div>
+      <div class="grid-projetos" id="grid-projetos"></div>
+    </section>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <span>Erik Ribeiro Café</span>
+    <button class="btn-sobre-mim-rodape" onmouseenter="tocarSomHover()" onclick="abrirModalSobreMim()">
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Sobre mim
+    </button>
+  </footer>
+
+  <!-- ================= BOTÃO & JANELA DO CHATBOT DE IA ================= -->
+  <button class="chat-trigger-btn" id="btn-chat-trigger" onclick="toggleChatWindow()" onmouseenter="tocarSomHover()">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+
+  <div class="chat-window hidden fade-enter" id="chat-window">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <div>
+          <div class="chat-title">Assistente de IA</div>
+          <div class="chat-status">Online • Sobre Erik</div>
+        </div>
+      </div>
+      <button class="chat-close-btn" onclick="toggleChatWindow()">&#10005;</button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg chat-msg-bot">
+        Olá! Sou a IA assistente do Erik. Pode me perguntar qualquer coisa sobre as formações, tecnologias ou projetos dele!
+      </div>
+    </div>
+
+    <div class="chat-suggestions">
+      <button class="chat-chip" onclick="enviarPerguntaPronta('Quais são as formações do Erik?')">Formação</button>
+      <button class="chat-chip" onclick="enviarPerguntaPronta('Quais tecnologias ele domina?')">Tecnologias</button>
+      <button class="chat-chip" onclick="enviarPerguntaPronta('Quais projetos ele tem?')">Projetos</button>
+      <button class="chat-chip" onclick="enviarPerguntaPronta('Onde ele mora?')">Localização</button>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chat-input" placeholder="Pergunte algo sobre o Erik..." onkeypress="handleKeyPress(event)">
+      <button class="chat-send-btn" onclick="enviarMensagem()">
+        <svg viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL DE PROJETO ================= -->
+  <div id="modal-projeto" class="modal-overlay hidden">
+    <div class="modal-content fade-enter" id="modal-content-container">
+      <button class="btn-fechar-modal" onclick="fecharModal('modal-projeto')">&#10005;</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL SOBRE MIM ================= -->
+  <div id="modal-sobre-mim" class="modal-overlay hidden">
+    <div class="modal-content fade-enter" style="--categoria-cor: var(--accent-about);">
+      <button class="btn-fechar-modal" onclick="fecharModal('modal-sobre-mim')">&#10005;</button>
+      <div class="modal-header">
+        <h3 class="modal-titulo">Cientista de Dados</h3>
+        <div class="info-localizacao">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span>Guarulhos, São Paulo</span>
+        </div>
+      </div>
+
+      <div class="modal-secao">
+        <h4>Biografia & Formação</h4>
+        <p>Profissional com formação multidisciplinar de nível técnica em administração, mecatrônica e desenvolvimento de sistemas, pelas instituições SENAI e ETEC, e bacharelando em ciência de dados pela UNIVESP.</p>
+      </div>
+
+      <div class="modal-secao">
+        <h4>Áreas de Atuação</h4>
+        <div class="modal-techs">
+          <span class="tag-modal">Ciência de Dados</span>
+          <span class="tag-modal">Desenvolvimento de Sistemas</span>
+          <span class="tag-modal">Mecatrônica & Automação</span>
+          <span class="tag-modal">Administração</span>
+        </div>
+      </div>
+
+      <div class="modal-acoes">
+        <a href="https://www.linkedin.com/in/erik-ribeiro-caf%C3%A9/" target="_blank" class="btn-acao-modal btn-acao-primary">LinkedIn</a>
+        <a href="https://github.com/ErikRibeiro2" target="_blank" class="btn-acao-modal btn-acao-secondary">GitHub</a>
+        <a href="mailto:erikribeirocafe@gmail.com" class="btn-acao-modal btn-acao-secondary">E-mail</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let dadosPortfolio = {};
+    let tecnologiaFiltroAtual = "Todos";
+    let categoriaAtualId = null;
+
+    /* ================= SINTETIZADOR DE SOM ================= */
+    let audioCtx = null;
+
+    function tocarSomHover() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.04);
+
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+      } catch (e) {}
+    }
+
+    async function carregarDados() {
+      try {
+        const resposta = await fetch('./dados.json');
+        dadosPortfolio = await resposta.json();
+        renderizarCategorias();
+        verificarUrlHash();
+      } catch (erro) {
+        console.error('Erro ao carregar o JSON:', erro);
+      }
+    }
+
+    function renderizarCategorias() {
+      const container = document.getElementById('grid-categorias');
+      container.innerHTML = '';
+
+      dadosPortfolio.categorias.forEach(cat => {
+        const qtdProjetos = dadosPortfolio.projetos.filter(p => p.categoriaId === cat.id).length;
+
+        const btn = document.createElement('button');
+        btn.className = 'card-categoria';
+        btn.style.setProperty('--accent-color', cat.cor);
+        btn.onmouseenter = tocarSomHover;
+        btn.onclick = () => abrirCategoria(cat.id);
+
+        btn.innerHTML = `
+          <div class="box-icone">${cat.icone}</div>
+          <span>${cat.nome}</span>
+          <span class="badge-contador">${qtdProjetos}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function abrirCategoria(categoriaId, atualizarHash = true) {
+      categoriaAtualId = categoriaId;
+      tecnologiaFiltroAtual = "Todos";
+      const categoria = dadosPortfolio.categorias.find(c => c.id === categoriaId);
+      const projetosCategoria = dadosPortfolio.projetos.filter(p => p.categoriaId === categoriaId);
+
+      if (atualizarHash) {
+        window.location.hash = categoriaId;
+      }
+
+      const headerContainer = document.getElementById('header-categoria');
+      headerContainer.innerHTML = `
+        <div class="box-icone" style="--accent-color: ${categoria.cor}">
+          ${categoria.icone}
+        </div>
+        <h2>${categoria.nome}</h2>
+      `;
+
+      renderizarChips(categoria, projetosCategoria);
+      renderizarProjetos(categoria, projetosCategoria);
+
+      const telaProjetos = document.getElementById('tela-projetos');
+      document.getElementById('tela-menu').classList.add('hidden');
+      
+      telaProjetos.classList.remove('hidden');
+      telaProjetos.classList.remove('fade-enter');
+      void telaProjetos.offsetWidth;
+      telaProjetos.classList.add('fade-enter');
+    }
+
+    function renderizarChips(categoria, projetos) {
+      const chipsContainer = document.getElementById('container-chips');
+      chipsContainer.style.setProperty('--categoria-cor', categoria.cor);
+      chipsContainer.innerHTML = '';
+
+      const listaTechs = ["Todos"];
+      projetos.forEach(p => {
+        if (p.tecnologias) {
+          p.tecnologias.forEach(tech => {
+            if (!listaTechs.includes(tech)) listaTechs.push(tech);
+          });
+        }
+      });
+
+      if (listaTechs.length <= 1) {
+        chipsContainer.style.display = 'none';
+        return;
+      }
+
+      chipsContainer.style.display = 'flex';
+
+      listaTechs.forEach(tech => {
+        const chip = document.createElement('button');
+        chip.className = `chip-tech ${tech === tecnologiaFiltroAtual ? 'ativo' : ''}`;
+        chip.textContent = tech;
+        chip.onmouseenter = tocarSomHover;
+        chip.onclick = () => {
+          tecnologiaFiltroAtual = tech;
+          renderizarChips(categoria, projetos);
+          renderizarProjetos(categoria, projetos);
+        };
+        chipsContainer.appendChild(chip);
+      });
+    }
+
+    function renderizarProjetos(categoria, projetos) {
+      const gridProjetos = document.getElementById('grid-projetos');
+      gridProjetos.innerHTML = '';
+
+      const projetosFiltrados = tecnologiaFiltroAtual === "Todos" 
+        ? projetos 
+        : projetos.filter(p => p.tecnologias && p.tecnologias.includes(tecnologiaFiltroAtual));
+
+      if (projetosFiltrados.length === 0) {
+        gridProjetos.innerHTML = `<p style="color: var(--text-secondary); grid-column: 1/-1;">Nenhum projeto encontrado.</p>`;
+        return;
+      }
+
+      projetosFiltrados.forEach((proj, index) => {
+        const card = document.createElement('div');
+        card.className = 'card-projeto fade-enter';
+        card.style.animationDelay = `${index * 0.05}s`;
+        card.style.setProperty('--categoria-cor', categoria.cor);
+        card.style.setProperty('--categoria-cor-alpha', categoria.corAlpha);
+        card.onmouseenter = tocarSomHover;
+
+        const estiloCapa = proj.imagem ? `background-image: url('${proj.imagem}')` : '';
+
+        card.innerHTML = `
+          <div class="capa-projeto" style="${estiloCapa}">
+            ${!proj.imagem ? categoria.icone : ''}
+          </div>
+          <div class="conteudo-projeto">
+            <h3 class="titulo-projeto">${proj.titulo}</h3>
+            <div class="tags-projeto">${proj.tags}</div>
+            <p class="descricao-projeto">${proj.descricao}</p>
+            
+            <div class="rodape-projeto">
+              <div class="badge-status">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>${proj.status}</span>
+              </div>
+              <button class="btn-abrir-detalhes" onclick="abrirModalProjeto(${proj.id})">
+                Ver projeto &rsaquo;
+              </button>
+            </div>
+          </div>
+        `;
+        gridProjetos.appendChild(card);
+      });
+    }
+
+    function abrirModalProjeto(projetoId, atualizarHash = true) {
+      const projeto = dadosPortfolio.projetos.find(p => p.id === projetoId);
+      if (!projeto) return;
+
+      const categoria = dadosPortfolio.categorias.find(c => c.id === projeto.categoriaId);
+      
+      if (atualizarHash) {
+        window.location.hash = `projeto-${projetoId}`;
+      }
+
+      const modal = document.getElementById('modal-projeto');
+      const modalContent = document.getElementById('modal-content-container');
+      const modalBody = document.getElementById('modal-body');
+
+      modalContent.style.setProperty('--categoria-cor', categoria.cor);
+
+      const detalhes = projeto.detalhes || {};
+      const listaFuncs = detalhes.funcionalidades || [];
+
+      modalBody.innerHTML = `
+        <div class="modal-header">
+          <h3 class="modal-titulo">${projeto.titulo}</h3>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Status: ${projeto.status}</p>
+          <div class="modal-techs">
+            ${(projeto.tecnologias || []).map(t => `<span class="tag-modal">${t}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="modal-secao">
+          <h4>Sobre o Projeto</h4>
+          <p>${detalhes.descricaoCompleta || projeto.descricao}</p>
+        </div>
+
+        ${listaFuncs.length > 0 ? `
+          <div class="modal-secao">
+            <h4>Principais Funcionalidades / Destaques</h4>
+            <ul class="lista-funcionalidades">
+              ${listaFuncs.map(f => `<li>${f}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <div class="modal-acoes">
+          ${detalhes.github ? `
+            <a href="${detalhes.github}" target="_blank" class="btn-acao-modal btn-acao-primary">
+              Ver no GitHub
+            </a>
+          ` : ''}
+          ${detalhes.demo ? `
+            <a href="${detalhes.demo}" target="_blank" class="btn-acao-modal btn-acao-secondary">
+              Aceder à Demo
+            </a>
+          ` : ''}
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      modalContent.scrollTop = 0;
+    }
+
+    function abrirModalSobreMim() {
+      document.getElementById('modal-sobre-mim').classList.remove('hidden');
+    }
+
+    function fecharModal(idModal) {
+      document.getElementById(idModal).classList.add('hidden');
+      
+      if (idModal === 'modal-projeto' && categoriaAtualId) {
+        window.location.hash = categoriaAtualId;
+      }
+    }
+
+    function mostrarMenu() {
+      categoriaAtualId = null;
+      history.pushState("", document.title, window.location.pathname + window.location.search);
+
+      const telaMenu = document.getElementById('tela-menu');
+      document.getElementById('tela-projetos').classList.add('hidden');
+      
+      telaMenu.classList.remove('hidden');
+      telaMenu.classList.remove('fade-enter');
+      void telaMenu.offsetWidth;
+      telaMenu.classList.add('fade-enter');
+    }
+
+    function verificarUrlHash() {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+
+      if (hash.startsWith('projeto-')) {
+        const projId = parseInt(hash.replace('projeto-', ''));
+        const proj = dadosPortfolio.projetos.find(p => p.id === projId);
+        if (proj) {
+          abrirCategoria(proj.categoriaId, false);
+          abrirModalProjeto(projId, false);
+        }
+      } else {
+        const cat = dadosPortfolio.categorias.find(c => c.id === hash);
+        if (cat) {
+          abrirCategoria(hash, false);
+        }
+      }
+    }
+
+    /* ================= LÓGICA DO CHATBOT DE IA ================= */
+    function toggleChatWindow() {
+      const chatWin = document.getElementById('chat-window');
+      chatWin.classList.toggle('hidden');
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        enviarMensagem();
+      }
+    }
+
+    function enviarPerguntaPronta(pergunta) {
+      document.getElementById('chat-input').value = pergunta;
+      enviarMensagem();
+    }
+
+    async function enviarMensagem() {
+      const input = document.getElementById('chat-input');
+      const msgTexto = input.value.trim();
+      if (!msgTexto) return;
+
+      const chatMsgContainer = document.getElementById('chat-messages');
+
+      // 1. Mensagem do usuário
+      const userBubble = document.createElement('div');
+      userBubble.className = 'chat-msg chat-msg-user';
+      userBubble.textContent = msgTexto;
+      chatMsgContainer.appendChild(userBubble);
+
+      input.value = '';
+      chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
+
+      // 2. Balão de digitando
+      const botTypingBubble = document.createElement('div');
+      botTypingBubble.className = 'chat-msg chat-msg-bot';
+      botTypingBubble.textContent = 'Pensando...';
+      chatMsgContainer.appendChild(botTypingBubble);
+      chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
+
+      try {
+        // Envia para a Vercel Serverless Function em /api/chat
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mensagem: msgTexto,
+            dadosPortfolio: dadosPortfolio
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.resposta) {
+          botTypingBubble.textContent = data.resposta;
+        } else {
+          botTypingBubble.textContent = gerarRespostaSimulada(msgTexto); // Fallback local se a API falhar
+        }
+      } catch (e) {
+        // Fallback local se estiver rodando apenas via Live Server local
+        botTypingBubble.textContent = gerarRespostaSimulada(msgTexto);
+      }
+
+      chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
+    }
+
+    function gerarRespostaSimulada(pergunta) {
+      const q = pergunta.toLowerCase();
+
+      if (q.includes('formação') || q.includes('estudo') || q.includes('curso') || q.includes('faculdade') || q.includes('univesp') || q.includes('etec') || q.includes('senai')) {
+        return "O Erik tem formação multidisciplinar! Ele possui nível técnico em Administração (SENAI), Mecatrônica e Desenvolvimento de Sistemas (ETEC), e atualmente é Bacharelando em Ciência de Dados pela UNIVESP.";
+      }
+      
+      if (q.includes('tecnologia') || q.includes('linguagem') || q.includes('sabe') || q.includes('programação') || q.includes('python') || q.includes('godot')) {
+        return "O Erik trabalha com diversas tecnologias como Python, GDScript (Godot 4), C++, C#, JavaScript/HTML/CSS, SQL, além de conhecimentos em automação industrial, CLP e mecatrônica.";
+      }
+
+      if (q.includes('mora') || q.includes('onde') || q.includes('cidade') || q.includes('local')) {
+        return "O Erik está localizado em Guarulhos, no estado de São Paulo.";
+      }
+
+      if (q.includes('projeto') || q.includes('trabalho') || q.includes('portfolio') || q.includes('jogos')) {
+        const total = dadosPortfolio.projetos ? dadosPortfolio.projetos.length : 0;
+        return `O Erik possui ${total} projeto(s) cadastrado(s) no portfólio divididos entre desenvolvimento de jogos, automação, ciência de dados e sistemas. Você pode explorar as categorias na tela inicial!`;
+      }
+
+      if (q.includes('contato') || q.includes('email') || q.includes('linkedin') || q.includes('github')) {
+        return "Você pode entrar em contato com o Erik pelo e-mail erikribeirocafe@gmail.com ou acessar os links do LinkedIn e GitHub no botão 'Sobre mim' no rodapé.";
+      }
+
+      return "Sou o assistente do Erik! Posso responder sobre a formação dele (UNIVESP/ETEC/SENAI), linguagens que ele utiliza, localização ou sobre os projetos exibidos neste portfólio.";
+    }
+
+    window.onhashchange = verificarUrlHash;
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        const idModal = event.target.id;
+        fecharModal(idModal);
+      }
+    }
+
+    carregarDados();
+  </script>
+</body>
+</html>

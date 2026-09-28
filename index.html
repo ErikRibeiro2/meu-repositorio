@@ -1203,6 +1203,18 @@
       enviarMensagem();
     }
 
+    // Função auxiliar para formatar negritos (**texto**) em HTML
+    function formatarMarkdown(texto) {
+      if (!texto) return '';
+      // Substitui **texto** por <strong>texto</strong> e protege contra injeção de HTML
+      const textoEscapado = texto
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      return textoEscapado.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }
+
     async function enviarMensagem() {
       const input = document.getElementById('chat-input');
       const msgTexto = input.value.trim();
@@ -1239,7 +1251,8 @@
         const data = await response.json();
         
         if (response.ok && data.resposta) {
-          botTypingBubble.textContent = data.resposta;
+          // Usa innerHTML com a formatação de negrito tratada
+          botTypingBubble.innerHTML = formatarMarkdown(data.resposta);
         } else {
           console.error('Erro retornado pela API:', data);
           botTypingBubble.textContent = 'Desculpe, tive um problema ao consultar as informações. Tente novamente em instantes!';
@@ -1251,7 +1264,6 @@
 
       chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
     }
-
     window.onhashchange = verificarUrlHash;
 
     window.onclick = function(event) {

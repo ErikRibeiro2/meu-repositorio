@@ -723,6 +723,30 @@
     .modal-secao h4 { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
     .modal-secao p { color: #c5c9d0; line-height: 1.6; font-size: 0.98rem; }
 
+    .lista-funcionalidades {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .lista-funcionalidades li {
+      color: #c5c9d0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .lista-funcionalidades li::before {
+      content: "•";
+      color: var(--categoria-cor, var(--accent-about));
+      font-weight: bold;
+      font-size: 1.2rem;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+
     .modal-acoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--card-border); }
     .btn-acao-modal { padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
     .btn-acao-primary { background-color: var(--categoria-cor, var(--accent-about)); color: #0b0c10; }
@@ -1108,7 +1132,7 @@
           ` : ''}
           ${detalhes.demo ? `
             <a href="${detalhes.demo}" target="_blank" class="btn-acao-modal btn-acao-secondary">
-              Aceder à Demo
+              Acessar Demo
             </a>
           ` : ''}
         </div>
@@ -1228,7 +1252,6 @@
       chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
     }
 
-    
     window.onhashchange = verificarUrlHash;
 
     window.onclick = function(event) {

@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  // Configuração dos cabeçalhos CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -20,36 +21,33 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Chave de API não encontrada no servidor.' });
     }
 
-    const systemInstruction = `
-      Você é a IA assistente oficial do portfólio de Erik Ribeiro Café.
-      Sua função é responder a recrutadores e visitantes sobre o perfil profissional, competências, formações e projetos do Erik.
-
-      INFORMAÇÕES SOBRE O ERIK:
-      - Título Profissional: Cientista de Dados.
-      - Biografia e Formação: Formação técnica em Administração (SENAI), Mecatrônica (ETEC) e Desenvolvimento de Sistemas (ETEC). Bacharelando em Ciência de Dados pela UNIVESP.
-      - Localização: Guarulhos, São Paulo.
-      - Contato: erikribeirocafe@gmail.com | LinkedIn: linkedin.com/in/erik-ribeiro-café | GitHub: github.com/ErikRibeiro2
-
-      DADOS ATUAIS DO PORTFÓLIO:
-      ${JSON.stringify(dadosPortfolio, null, 2)}
-
-      REGRAS:
-      1. Responda em Português de forma concisa (máximo 3 frases).
-      2. Seja profissional e amigável.
-    `;
-
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        system_instruction: {
+          parts: [
+            {
+              text: `Você é a IA assistente oficial do portfólio de Erik Ribeiro Café.
+Sua função é responder a recrutadores e visitantes sobre o perfil profissional, competências, formações e projetos do Erik.
+
+DADOS ATUAIS DO PORTFÓLIO:
+${JSON.stringify(dadosPortfolio, null, 2)}
+
+REGRAS OBRIGATÓRIAS DE RESPOSTA:
+1. Responda DIRETAMENTE à pergunta feita pelo usuário. Não dê respostas genéricas nem diga apenas o que você pode responder.
+2. Se o usuário perguntar pelas formações, liste as formações do Erik diretamente.
+3. Se o usuário perguntar por uma tecnologia específica (ex: Flutter, Python), verifique no JSON e confirme objetivamente se ele domina/utiliza ou não essa tecnologia.
+4. Mantenha um tom profissional, amigável e objetivo (no máximo 3 frases por resposta).`
+            }
+          ]
+        },
         contents: [
           {
             role: 'user',
-            parts: [
-              { text: `${systemInstruction}\n\nPergunta do visitante: ${mensagem}` }
-            ]
+            parts: [{ text: mensagem }]
           }
         ]
       })

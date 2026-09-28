@@ -1206,13 +1206,14 @@
     // Função auxiliar para formatar negritos (**texto**) em HTML
     function formatarMarkdown(texto) {
       if (!texto) return '';
-      // Substitui **texto** por <strong>texto</strong> e protege contra injeção de HTML
       const textoEscapado = texto
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
-
-      return textoEscapado.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+      return textoEscapado
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Transforma **texto** em negrito
+        .replace(/^\s*\*\s+/gm, '• ');                   // Transforma * no início da linha em marcador elegante
     }
 
     async function enviarMensagem() {

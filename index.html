@@ -1195,7 +1195,7 @@
       input.value = '';
       chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
 
-      // 2. Balão de digitando
+      // 2. Indicador de carregamento
       const botTypingBubble = document.createElement('div');
       botTypingBubble.className = 'chat-msg chat-msg-bot';
       botTypingBubble.textContent = 'Pensando...';
@@ -1203,7 +1203,6 @@
       chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
 
       try {
-        // Envia para a Vercel Serverless Function em /api/chat
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1215,46 +1214,21 @@
 
         const data = await response.json();
         
-        if (data.resposta) {
+        if (response.ok && data.resposta) {
           botTypingBubble.textContent = data.resposta;
         } else {
-          botTypingBubble.textContent = gerarRespostaSimulada(msgTexto); // Fallback local se a API falhar
+          console.error('Erro retornado pela API:', data);
+          botTypingBubble.textContent = 'Desculpe, tive um problema ao consultar as informações. Tente novamente em instantes!';
         }
-      } catch (e) {
-        // Fallback local se estiver rodando apenas via Live Server local
-        botTypingBubble.textContent = gerarRespostaSimulada(msgTexto);
+      } catch (erro) {
+        console.error('Erro de conexão:', erro);
+        botTypingBubble.textContent = 'Erro de conexão com o servidor. Verifique sua rede.';
       }
 
       chatMsgContainer.scrollTop = chatMsgContainer.scrollHeight;
     }
 
-    function gerarRespostaSimulada(pergunta) {
-      const q = pergunta.toLowerCase();
-
-      if (q.includes('formação') || q.includes('estudo') || q.includes('curso') || q.includes('faculdade') || q.includes('univesp') || q.includes('etec') || q.includes('senai')) {
-        return "O Erik tem formação multidisciplinar! Ele possui nível técnico em Administração (SENAI), Mecatrônica e Desenvolvimento de Sistemas (ETEC), e atualmente é Bacharelando em Ciência de Dados pela UNIVESP.";
-      }
-      
-      if (q.includes('tecnologia') || q.includes('linguagem') || q.includes('sabe') || q.includes('programação') || q.includes('python') || q.includes('godot')) {
-        return "O Erik trabalha com diversas tecnologias como Python, GDScript (Godot 4), C++, C#, JavaScript/HTML/CSS, SQL, além de conhecimentos em automação industrial, CLP e mecatrônica.";
-      }
-
-      if (q.includes('mora') || q.includes('onde') || q.includes('cidade') || q.includes('local')) {
-        return "O Erik está localizado em Guarulhos, no estado de São Paulo.";
-      }
-
-      if (q.includes('projeto') || q.includes('trabalho') || q.includes('portfolio') || q.includes('jogos')) {
-        const total = dadosPortfolio.projetos ? dadosPortfolio.projetos.length : 0;
-        return `O Erik possui ${total} projeto(s) cadastrado(s) no portfólio divididos entre desenvolvimento de jogos, automação, ciência de dados e sistemas. Você pode explorar as categorias na tela inicial!`;
-      }
-
-      if (q.includes('contato') || q.includes('email') || q.includes('linkedin') || q.includes('github')) {
-        return "Você pode entrar em contato com o Erik pelo e-mail erikribeirocafe@gmail.com ou acessar os links do LinkedIn e GitHub no botão 'Sobre mim' no rodapé.";
-      }
-
-      return "Sou o assistente do Erik! Posso responder sobre a formação dele (UNIVESP/ETEC/SENAI), linguagens que ele utiliza, localização ou sobre os projetos exibidos neste portfólio.";
-    }
-
+    
     window.onhashchange = verificarUrlHash;
 
     window.onclick = function(event) {
